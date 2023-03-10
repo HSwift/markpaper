@@ -184,12 +184,13 @@ class Paragraph(Container):
     def parse(self, text):
         self.components: list[Text | ImageRef | TableRef | Ref] = []
         syntax = r"(?P<escape>\\.)|" \
-                 r"(?P<image>@image\[\[.*?\]\])|" \
-                 r"(?P<table>@table\[\[.*?\]\])|" \
+                 r"(?P<image_ref>@image\[\[.*?\]\])|" \
+                 r"(?P<table_ref>@table\[\[.*?\]\])|" \
+                 r"(?P<code_ref>@code\[\[.*?\]\])|" \
                  r"(?P<ref>@\[\[.*?\]\])|" \
-                 r"(?P<code>@code\[\[.*?\]\])|" \
                  r"(?P<italic>\*[^*]+\*)|" \
-                 r"(?P<bold>\*\*[^*]+\*\*)"
+                 r"(?P<bold>\*\*[^*]+\*\*)|" \
+                 r"(?P<code>`[^`]+`)"
         res = re.finditer(syntax, text)
         start = 0
         for g in res:
@@ -197,20 +198,22 @@ class Paragraph(Container):
                 Text(self).parse(text[start:g.start()])
             start = g.end()
             match g.groupdict():
-                case {"image": t} if t is not None:
+                case {"image_ref": t} if t is not None:
                     ImageRef(self).parse(t)
-                case {"table": t} if t is not None:
+                case {"table_ref": t} if t is not None:
                     TableRef(self).parse(t)
+                case {"code_ref": t} if t is not None:
+                    CodeRef(self).parse(t)
                 case {"ref": t} if t is not None:
                     Ref(self).parse(t)
-                case {"code": t} if t is not None:
-                    CodeRef(self).parse(t)
                 case {"italic": t} if t is not None:
                     ItalicSpan(self).parse(t)
                 case {"bold": t} if t is not None:
                     BoldSpan(self).parse(t)
                 case {"escape": t} if t is not None:
                     EscapeSpan(self).parse(t)
+                case {"code": t} if t is not None:
+                    CodeSpan(self).parse(t)
         if start != len(text):
             Text(self).parse(text[start:])
         return self
@@ -374,6 +377,16 @@ class EscapeSpan(Text):
         return self
 
 
+class CodeSpan(Text):
+    text: str
+
+    def parse(self, text):
+        self.text = text[1:-1]
+
+    def __str__(self) -> str:
+        return f"<CodeSpan text={self.text}>"
+
+
 class Macro:
     type: str
     args: dict[str, str | int] | None
@@ -517,6 +530,7 @@ class MarkdownConfig:
         bold: Optional[bool]
         italic: Optional[bool]
         format: Optional[str]
+        background: Optional[str]
 
         @property
         def docx_style_name(self):
@@ -895,8 +909,27 @@ class MarkdownConfig:
             return self
 
         @property
+        def docx_style_name(self):
+            return ""
+
+        @property
         def html_style_name(self):
             return "*"
+
+    class CodeSpan(FontBase):
+        @staticmethod
+        def default() -> MarkdownConfig.CodeSpan:
+            self = MarkdownConfig.CodeSpan()
+            self.background = "#e3e6e8"
+            return self
+
+        @property
+        def docx_style_name(self):
+            return "Code Span"
+
+        @property
+        def html_style_name(self):
+            return "code"
 
     base: MarkdownConfig.Base = Base()
     heading: MarkdownConfig.Heading = Heading()
@@ -919,6 +952,7 @@ class MarkdownConfig:
     codeLabel: MarkdownConfig.CodeLabel = CodeLabel()
     codeRef: MarkdownConfig.CodeRef = CodeRef()
     all: MarkdownConfig.All = All()
+    codeSpan: MarkdownConfig.CodeSpan = CodeSpan()
 
     def list(self) -> list[str]:
         return list(self.__annotations__)

@@ -60,6 +60,7 @@ class DOCXConvertor:
         from docx.shared import RGBColor
         from docx.oxml.ns import qn
         from utils import convert_color
+        from docx.enum.text import WD_COLOR_INDEX
         for item in rule.dict(exclude_none=True).items():
             match item:
                 case ["en_font", font]:
@@ -74,6 +75,12 @@ class DOCXConvertor:
                     style.font.bold = bold
                 case ["italic", italic]:
                     style.font.italic = italic
+                case ["background", background]:
+                    background = background.upper()
+                    if hasattr(WD_COLOR_INDEX, background):
+                        style.font.highlight_color = getattr(WD_COLOR_INDEX, background)
+                    else:
+                        style.font.highlight_color = WD_COLOR_INDEX.YELLOW
 
     def set_paragraph_style(self, rule: MarkdownConfig.Base, style: _ParagraphStyle | _CharacterStyle):
         from docx.shared import Pt
@@ -183,3 +190,6 @@ class DOCXConvertor:
 
     def EscapeSpan(self, o: markdown.EscapeSpan, p: DocumentParagraph):
         p.add_run(o.text)
+
+    def CodeSpan(self, o: markdown.CodeSpan, p: DocumentParagraph):
+        p.add_run(o.text, o.get_config().docx_style_name)

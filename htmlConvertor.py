@@ -99,6 +99,8 @@ class HTMLConvertor:
                     html_style['margin'] = margin
                 case ['padding', padding]:
                     html_style['padding'] = padding
+                case ['background', background]:
+                    html_style['background'] = background
         return html_style
 
     def Section(self, o: markdown.Section, p: Element):
@@ -206,6 +208,11 @@ class HTMLConvertor:
         span = Element('span')
         span.text = o.text
         p.append(span)
+
+    def CodeSpan(self, o: markdown.CodeSpan, p: Element):
+        code = Element('code')
+        code.text = o.text
+        p.append(code)
 
     def Code(self, o: markdown.Code, p: Element):
         pre = Element('pre')
