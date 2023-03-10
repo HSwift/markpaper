@@ -1,0 +1,156 @@
+<html><head><style>body {
+font-family: "Times New Roman", "宋体";
+font-size: 14pt;
+font-weight: normal;
+text-indent: 0em;
+line-height: 1.5;
+text-align: justify;
+margin: 25pt 25pt;
+padding: 0;
+}
+h1,h2,h3,h4,h5,h6 {
+font-size: 20pt;
+font-weight: bold;
+}
+.head1 {
+font-size: 24pt;
+font-weight: bold;
+text-align: center;
+}
+.head2 {
+}
+.head3 {
+}
+.head4 {
+}
+.head5 {
+}
+.head6 {
+}
+p {
+text-indent: 2em;
+}
+img {
+width: 600pt;
+margin: 0 auto;
+display: block;
+}
+.image-ref {
+}
+.image-label {
+text-align: center;
+}
+table {
+width: 600pt;
+margin: 0 auto;
+border-width: 1pt;
+border-style: solid;
+border-color: black;
+border-collapse: collapse;
+}
+.table-ref {
+}
+.table-label {
+text-align: center;
+}
+td {
+border-width: 1pt;
+border-style: solid;
+border-color: black;
+}
+th {
+font-weight: bold;
+border-width: 1pt;
+border-style: solid;
+border-color: black;
+}
+pre {
+width: 600pt;
+margin: 0 auto;
+border-width: 1pt;
+border-style: solid;
+border-color: black;
+}
+.code-label {
+text-align: center;
+}
+.code-ref {
+}
+* {
+margin: 0;
+padding: 0;
+}
+.references {
+}
+</style></head><body><div><div><h1 class="head1">markpaper</h1><div><h2 class="head2">1 介绍</h2><p><span>markpaper是一个将markdown</span><sup>1</sup><span>转换成html或docx格式的小工具，提供了给标题、图、表、代码编号的功能，并且可以使用YAML</span><sup>2</sup><span>进行样式配置，可以用于输出格式标准的论文或报告。</span></p></div><div><h2 class="head2">2 用法</h2><p><span>1. 安装requirements.txt中指定的依赖</span></p><p><span>2. 使用python3运行main.py，给出需要转换的markdown文件</span></p><p><span>3. 具体的命令行选项请运行main.py --help</span></p></div><div><h2 class="head2">3 语法</h2><p><span>markpaper提供了与</span><b>markdown相似</b><span>的语法，具体区别如</span><span class="table-ref">表1</span><span>所示。</span></p><div class="table-label">表1 与markdown的区别</div><table><tr><th><span>markdown语法</span></th><th><span>markpaper</span></th></tr><tr><td><span>标题</span></td><td><span>只支持#作为标题</span></td></tr><tr><td><span>段落</span></td><td><span>markpaper按换行符分割段落，不需要插入空白行</span></td></tr><tr><td><span>换行</span></td><td><span>不支持</span></td></tr><tr><td><span>粗体</span></td><td><span>支持</span></td></tr><tr><td><span>斜体</span></td><td><span>支持</span></td></tr><tr><td><span>引用</span></td><td><span>不支持</span></td></tr><tr><td><span>列表</span></td><td><span>不支持</span></td></tr><tr><td><span>代码短语</span></td><td><span>不支持</span></td></tr><tr><td><span>代码块</span></td><td><span>支持，代码块名称为原本语言的位置</span></td></tr><tr><td><span>分割线</span></td><td><span>不支持</span></td></tr><tr><td><span>链接</span></td><td><span>不支持</span></td></tr><tr><td><span>图片</span></td><td><span>支持</span></td></tr><tr><td><span>转义</span></td><td><span>支持</span></td></tr><tr><td><span>内嵌HTML</span></td><td><span>不支持</span></td></tr><tr><td><span>表格</span></td><td><span>支持，但需要使用特定语法定义表名</span></td></tr></table><p><span>除了部分兼容markdown的语法外，还提供了用于标记引用的语法：</span></p><p><span>1. 参考引用，</span><span>@</span><span>[[引用来源]]</span></p><p><span>2. 图片引用，</span><span>@</span><span>image[[图片名称]]</span></p><p><span>3. 表格引用，</span><span>@</span><span>table[[表格名称]]</span></p><p><span>4. 代码引用，</span><span>@</span><span>code[[代码名称]]</span></p><p><span>另外还提供了一个宏语法，使用</span><span>@</span><span>macro_name(k1=v1,k2=v2,...)，可以对下面的元素进行属性配置。但目前只提供了table宏，用于定义表名称。</span></p></div><div><h2 class="head2">4 配置选项</h2><div><h3 class="head3">4.1 元素配置</h3><p><span>用户可在markdown的最前面插入yaml frontmatter</span><sup>3</sup><span>，定义多种元素的样式，具体内容如</span><span class="table-ref">表2</span><span>所示。</span></p><div class="table-label">表2 元素列表</div><table><tr><th><span>键名</span></th><th><span>html</span></th><th><span>docx</span></th></tr><tr><td><span>base</span></td><td><span>body的样式</span></td><td><span>基准样式</span></td></tr><tr><td><span>heading</span></td><td><span>h1-h6的样式，可被继承</span></td><td><span>标题的基准样式</span></td></tr><tr><td><span>h1</span></td><td><span>h1的样式，一般用作大标题</span></td><td><span>标题1的样式</span></td></tr><tr><td><span>h2-h6</span></td><td><span>h2-h6的样式</span></td><td><span>对于标题级别的样式</span></td></tr><tr><td><span>paragraph</span></td><td><span>p标签的样式</span></td><td><span>段落的样式</span></td></tr><tr><td><span>image</span></td><td><span>img标签的样式</span></td><td><i>无</i></td></tr><tr><td><span>imageRef</span></td><td><span>图片引用span的样式</span></td><td><span>图片引用的样式，只能配置字体</span></td></tr><tr><td><span>imageLabel</span></td><td><span>图片名称的样式</span></td><td><span>图片名称的样式</span></td></tr><tr><td><span>table</span></td><td><span>table标签的样式</span></td><td><span>表格样式</span></td></tr><tr><td><span>tableRef</span></td><td><span>表格引用span的样式</span></td><td><span>表格引用的样式，只能配置字体</span></td></tr><tr><td><span>tableLabel</span></td><td><span>表格名称的样式</span></td><td><span>表格名称的样式</span></td></tr><tr><td><span>tableCell</span></td><td><span>td标签的样式</span></td><td><span>除了表头之外的单元格的样式</span></td></tr><tr><td><span>tableHeadCell</span></td><td><span>th标签的样式</span></td><td><span>表头单元格的样式</span></td></tr><tr><td><span>code</span></td><td><span>pre标签的样式</span></td><td><i>无</i></td></tr><tr><td><span>codeLabel</span></td><td><span>代码名称的样式</span></td><td><span>代码名称的样式</span></td></tr><tr><td><span>all</span></td><td><span>匹配所有元素的样式</span></td><td><span>无</span></td></tr></table></div><div><h3 class="head3">4.2 属性配置</h3><p><span>可配置的属性列表如</span><span class="table-ref">表3</span><span>所示，所有的样式属性html都支持，docx部分支持。</span></p><div class="table-label">表3 属性列表</div><table><tr><th><span>键名</span></th><th><span>类型</span></th><th><span>用途</span></th><th><span>docx</span></th></tr><tr><td><span>color</span></td><td><span>str</span></td><td><span>字体颜色</span></td><td><span>✓</span></td></tr><tr><td><span>font_size*</span></td><td><span>int</span></td><td><span>字体大小</span></td><td><span>✓</span></td></tr><tr><td><span>en_font</span></td><td><span>str</span></td><td><span>英文字体</span></td><td><span>✓</span></td></tr><tr><td><span>cn_font</span></td><td><span>str</span></td><td><span>中文字体</span></td><td><span>✓</span></td></tr><tr><td><span>bold</span></td><td><span>bool</span></td><td><span>粗体</span></td><td><span>✓</span></td></tr><tr><td><span>italic</span></td><td><span>bool</span></td><td><span>斜体</span></td><td><span>✓</span></td></tr><tr><td><span>width*</span></td><td><span>int</span></td><td><span>宽度</span></td><td><span>✘</span></td></tr><tr><td><span>height*</span></td><td><span>int</span></td><td><span>高度</span></td><td><span>✘</span></td></tr><tr><td><span>first_line_indent</span></td><td><span>int</span></td><td><span>首行缩进（字符）</span></td><td><span>✓</span></td></tr><tr><td><span>line_spacing*</span></td><td><span>int</span></td><td><span>行间距</span></td><td><span>✓</span></td></tr><tr><td><span>line_spacing_type</span></td><td><span>"1", "1.5", "2"</span></td><td><span>行间距类型（单倍、1.5倍，双倍）</span></td><td><span>✓</span></td></tr><tr><td><span>alignment</span></td><td><span>"right", "left", "center", "justify"</span></td><td><span>对齐</span></td><td><span>✓</span></td></tr><tr><td><span>block_alignment</span></td><td><span>"right", "left", "center", "justify"</span></td><td><span>块元素对齐</span></td><td><span>✓</span></td></tr><tr><td><span>border_width*</span></td><td><span>int</span></td><td><span>边框宽度</span></td><td><span>✘</span></td></tr><tr><td><span>border_style</span></td><td><span>"solid"</span></td><td><span>边框类型</span></td><td><span>✘</span></td></tr><tr><td><span>border_color</span></td><td><span>str</span></td><td><span>边框颜色</span></td><td><span>✘</span></td></tr><tr><td><span>border_collapse</span></td><td><span>"collapse", "separate"</span></td><td><span>边框折叠</span></td><td><span>✘</span></td></tr><tr><td><span>word_wrap</span></td><td><span>bool</span></td><td><span>允许英文单词内换行</span></td><td><span>✓</span></td></tr><tr><td><span>display</span></td><td><span>"inline", "block", "none"</span></td><td><span>显示</span></td><td><span>✘</span></td></tr><tr><td><span>margin</span></td><td><span>str</span></td><td><span>外边距</span></td><td><span>✘</span></td></tr><tr><td><span>padding</span></td><td><span>str</span></td><td><span>内边距</span></td><td><span>✘</span></td></tr></table><p><span>*: 采用的单位为pt（磅）</span></p><p><span>另外对于标签类和标题类的元素，还提供了一个format属性，用于配置输出格式。可以选用的占位符有：</span></p><p><span>1. {gi} 该标签在整个文章中的编号</span></p><p><span>2. {s1} - {s6} 对于级别的标题编号</span></p><p><span>3. {name} 元素的name属性</span></p><p><span>4. {text} 元素的text属性</span></p></div><div><h3 class="head3">4.3 默认配置</h3><p><span>如果用户没有提供对应元素的样式，那么markpaper会采用默认样式，见</span><span class="code-ref">代码1</span><span>。</span></p><pre>all:
+  margin: '0'
+  padding: '0'
+base:
+  alignment: justify
+  bold: false
+  cn_font: "宋体"
+  en_font: Times New Roman
+  first_line_indent: 0
+  font_size: 14
+  italic: false
+  line_spacing_type: '1.5'
+  margin: 25pt 25pt
+  padding: '0'
+code:
+  border_color: black
+  border_style: solid
+  border_width: 1
+  format: "代码{gi} {text}"
+  show_line_numbers: false
+codeLabel:
+  alignment: center
+imageRef:
+  format: "代码{gi}"
+h1:
+  alignment: center
+  bold: true
+  font_size: 24
+  format: '{text}'
+h2:
+  format: '{s1} {text}'
+h3:
+  format: '{s1}.{s2} {text}'
+h4:
+  format: '{s1}.{s2}.{s3} {text}'
+h5:
+  format: '{s1}.{s2}.{s3}.{s4} {text}'
+h6:
+  format: '{s1}.{s2}.{s3}.{s4}.{s5} {text}'
+heading:
+  bold: true
+  font_size: 20
+image:
+  block_alignment: center
+  display: block
+  format: "图{gi} {text}"
+imageLabel:
+  alignment: center
+imageRef:
+  format: "图{gi}"
+paragraph:
+  first_line_indent: 2
+table:
+  block_alignment: center
+  border_collapse: collapse
+  border_color: black
+  border_style: solid
+  border_width: 1
+  format: "表{gi} {text}"
+tableCell:
+  border_color: black
+  border_style: solid
+  border_width: 1
+tableHeadCell:
+  bold: true
+  border_color: black
+  border_style: solid
+  border_width: 1
+tableLabel:
+  alignment: center
+tableRef:
+  format: "表{gi}"</pre><div class="code-label">代码1 默认样式</div></div></div><div><h2 class="head2">5 效果</h2><p><span>html的转换效果请查看README.html，docx的转换效果如</span><span class="image-ref">图1</span><span>所示。</span></p><img src="./README.png"><div class="image-label">图1 docx转换效果</div></div><div><h2 class="head2">6 参考文献</h2><p><span>[1] https://en.wikipedia.org/wiki/Markdown </span></p><p><span>[2] https://yaml.org/ </span></p><p><span>[3] https://docs.zettlr.com/en/core/yaml-frontmatter/ </span></p></div></div></div></body></html>
