@@ -1,8 +1,23 @@
+---
+table:
+  width: 600
+image:
+  width: 600
+code:
+  block_alignment: center
+  width: 600
+---
 # markpaper
 
 ## 介绍
 
-markpaper是一个将markdown@[[https://en.wikipedia.org/wiki/Markdown]]转换成html或docx格式的小工具，提供了给标题、图、表、代码编号的功能，并且可以使用YAML@[[https://yaml.org/]]进行样式配置，可以用于输出格式标准的论文或报告。
+markpaper是一个将markdown@[[https://en.wikipedia.org/wiki/Markdown ]]转换成html或docx格式的小工具，提供了给标题、图、表、代码编号的功能，并且可以使用YAML@[[https://yaml.org/ ]]进行样式配置，可以用于输出格式标准的论文或报告。
+
+## 用法
+
+1. 安装requirements.txt中指定的依赖
+2. 使用python3运行main.py，给出需要转换的markdown文件
+3. 具体的命令行选项请运行main.py --help
 
 ## 语法
 
@@ -41,7 +56,7 @@ markpaper提供了与**markdown相似**的语法，具体区别如@table[[与mar
 
 ### 元素配置
 
-用户可在markdown的最前面插入yaml frontmatter@[[https://docs.zettlr.com/en/core/yaml-frontmatter/]]，定义多种元素的样式，具体内容如@table[[元素列表]]所示。
+用户可在markdown的最前面插入yaml frontmatter@[[https://docs.zettlr.com/en/core/yaml-frontmatter/ ]]，定义多种元素的样式，具体内容如@table[[元素列表]]所示。
 
 @table(name="元素列表")
 
@@ -182,3 +197,8 @@ tableRef:
   format: "表{gi}"
 ```
 
+## 效果
+
+html的转换效果请查看README.html，docx的转换效果如@image[[docx转换效果]]所示。
+
+![docx转换效果](./README.png)
